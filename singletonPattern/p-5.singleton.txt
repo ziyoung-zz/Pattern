@@ -1,0 +1,45 @@
+5. singleton-pattern
+- 클래스 인스턴스가 하나만 만들어지도록 하고, 그 인스턴스에 대한 전역 접근을 제공
+- private 생성자와 정적메소드, 정적 변수를 사용하여 구현
+방법
+1.고전적 방법
+public class Singleton{
+	private static Singleton i;
+	private static Singleton getInstance(){
+		if(i==null){
+			i = new Singleton();
+		}
+	return i;
+	}
+}
+2.동기화 사용
+public class Singleton{
+	private static Singleton i;
+	private static synchronized Singleton getInstance(){
+		if(i==null){
+			i = new Singleton();
+		}
+		return i;
+	}
+}
+
+3. 정적초기화부분에서 인스턴스 생성
+public class Singleton{
+	private static Singleton i = new Singleton();
+	private static synchronized Singleton getInstance(){
+		return i;
+	}
+}
+
+4. DCL(double-checing locking) 사용
+public class Singleton{
+	private volatile static Singleton i;
+	private static synchronized Singleton getInstance(){
+		if(i==null){
+			synchronized(Singleton.class){
+				if(i==null) i = new Singleton();
+			}
+		}
+		return i;
+	}
+}
