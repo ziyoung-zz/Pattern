@@ -1,5 +1,5 @@
 # Command Patern
-![command-pattern].(./command-pattern.png)
+![command-pattern](./command-pattern.png)
 - 요청을 하는 객체와 그 요청을 수행하는 객체를 분리시킬수 있다.
 -  이벤트가 발생했을 때 실행될 기능이 다양하면서도 변경이 필요한 경우에 이벤트를 발생시키는 클래스를 변경하지 않고 재사용하고자 할 때 유용하다.
 - Command
