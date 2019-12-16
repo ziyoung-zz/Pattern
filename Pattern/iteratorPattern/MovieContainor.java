@@ -12,7 +12,7 @@ public class MovieContainor implements Containor {
 	public Movie getMovieAt(int index){
 		return movies[index];
     }
-    public void appendBook(Movie movie){
+    public void appendMovie(Movie movie){
         this.movies[last] = movie;
         last++;
     }
