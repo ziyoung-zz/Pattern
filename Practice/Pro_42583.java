@@ -1,77 +1,74 @@
-package main;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
-
-public class Main {
-
-	public static void main(String[] args) {
-	
-		//프로그래머스 42885번 문제
-		//[70, 50, 80, 50]	100	3
-		//[70, 80, 50]	100	3
-		
-		int[] people = {50,51};
-		int a = solution(people, 101);
-		System.out.println(a);
-	}
-
-	public static int solution(int[] people, int limit) {
-        int answer = 0; 
-        double mid = limit/(double)2;
-        int midPeopleCnt = 0;
-        ArrayList<Integer> smallPeople = new ArrayList<>();
-        ArrayList<Integer> bigPeople = new ArrayList<>(); 
-        Arrays.sort(people);
-       
-        for(int i=0 ; i< people.length ; i++) {
-        	
-        	if(mid > people[i]) {
-        		smallPeople.add(people[i]);
-        	}else if(mid == people[i]){
-        		midPeopleCnt++;
-        	}else{
-    			bigPeople.add(people[i]);
-        	} 
-        }
-        
-        if(midPeopleCnt % 2 == 1) bigPeople.add((int)mid);
-        answer = midPeopleCnt/2; //중간체급인사람
-        
-        Collections.reverse(smallPeople);
-        Collections.sort(bigPeople);
-        
-        Iterator smallItr = smallPeople.iterator();
-        int bigPeopleCnt=0; //건너간 큰사람수
-        
-        for(int i=0 ; i< bigPeople.size() ; i++) {
-        	
-        	while(smallItr.hasNext()) {
-              
-        		if( (int)smallItr.next() + bigPeople.get(i) < limit+1) {
-        			smallItr.remove();
-        			answer++;
-        			bigPeopleCnt++;
-        			break;
+class Solution {
+    public static int solution(int bridge_length, int weight, int[] truck_weights) {
+	       
+	       ArrayList<Truck> waitTruck = new ArrayList<>();
+	        ArrayList<Truck> bridgeTruck = new ArrayList<>();
+	        
+	        for(int i=0 ; i<truck_weights.length ; i++) {
+	        	Truck t = new Truck(truck_weights[i], bridge_length);
+	        	waitTruck.add(t);
+	        }
+	        
+	        int bridgeWeight = 0; //다리위 트럭무게
+	        int answer = 0; //다리건너는 시간
+	        int index = 0;
+	        
+	        
+	     	while(true) {
+	     		answer++;
+	     		
+	     		Iterator itr = bridgeTruck.iterator();
+        		while(itr.hasNext()) {	 
+        			
+        			Truck bridge_t = (Truck)itr.next(); 
+        			bridge_t.minusPos();
+        			
+        			if(bridge_t.getPos() == 0) {
+        				bridgeWeight -= bridge_t.getWeight();
+        				itr.remove();
+        				
+        				if(bridgeTruck.size() == 0 && index == waitTruck.size())  	
+        					return answer;
+        			}
         		}
-            }
-        }
-
-        //남은 큰사람들을 건너보낸다
-        answer += bigPeople.size() - bigPeopleCnt;  
-    
-        //남은 작은사람들을 건너보낸다
-        if(smallPeople.size()%2 == 1) answer +=1;
-    	answer += smallPeople.size()/2;
-        
-        return answer;
-
-    }
+        		
+        		if(index == waitTruck.size()) {
+        			continue;
+        		}
+        		
+        		Truck t = waitTruck.get(index);
+        		if(bridgeWeight + t.getWeight() < weight + 1 && bridgeTruck.size() < bridge_length + 1) {
+	        		
+	        		bridgeTruck.add(t);
+	        		bridgeWeight += t.getWeight();
+	        		index++;
+	        	}
+	
+        	}
+	     	
+	  }
+	
+	static class Truck {
+		 int weight;
+		 int pos;
+		 
+		 Truck(int weight, int pos){
+			 this.weight = weight;
+			 this.pos = pos;
+		 }
+		 
+		 void minusPos() {
+			 this.pos --;
+		 }
+		 
+		 int getWeight() {
+			 return this.weight;
+		 }
+		 
+		 int getPos() {
+			 return this.pos;
+		 }
+	 }	
 }
-
-
-
-
-
