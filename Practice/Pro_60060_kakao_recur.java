@@ -1,10 +1,9 @@
-
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Test {
 
 	//60060
-	//효율성 2개(1,3)통과 못함
 	public static void main(String[] args){
 		
 		String[] words = {"aaa","abd","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab","wef","eeef","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"};
@@ -14,7 +13,8 @@ public class Test {
 	}
 
 	 public static int[] solution(String[] words, String[] queries) {
-		 		 
+		 	
+		 	HashMap<String, Integer> map = new HashMap<>();
 	        int[] answer = new int[queries.length];	      
 	        Arrays.sort(words);
 	        	        
@@ -29,11 +29,19 @@ public class Test {
 	        	
 	        	int cnt = 0;	        	
 	        	
-	        	if(queries[i].charAt(0) != '?'){
-	        		cnt = findWord(words,queries[i]);
+	        	if(!map.containsKey(queries[i])){
+	        		
+	        		if(queries[i].charAt(0) != '?'){
+		        		cnt = findWord(words,queries[i]);
+		        	}else{
+		        		cnt = findWord(words2,reverseWord(queries[i]));
+		        	}
+	        		map.put(queries[i], cnt);
+	        		
 	        	}else{
-	        		cnt = findWord(words2,reverseWord(queries[i]));
-	        	}	      
+	        		cnt = map.get(queries[i]);
+	        	}
+	        	      
 	        	answer[i] = cnt;
 	        }
 	        
