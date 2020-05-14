@@ -1,0 +1,70 @@
+package com.board.dao;
+
+import java.util.HashMap;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
+
+import com.board.domain.BoardVO;
+
+@Repository
+public class BoardDAOImpl implements BoardDAO {
+
+	 @Inject
+	 private SqlSession sql;
+	 private static String namespace = "com.board.mappers.board";
+	 
+	
+	@Override
+	public List<BoardVO> list() throws Exception {
+		 return sql.selectList(namespace + ".list");
+	}
+
+
+	@Override
+	public void write(BoardVO vo) throws Exception {
+		sql.insert(namespace + ".write", vo);
+	}
+
+
+	@Override
+	public BoardVO view(int bno) throws Exception {
+		return sql.selectOne(namespace + ".view", bno);
+	}
+	
+	// 게시물 수정
+	@Override
+	public void modify(BoardVO vo) throws Exception {
+		sql.update(namespace + ".modify", vo);
+	}
+
+
+	// 게시물 삭제
+	@Override
+	public void delete(int bno) throws Exception {
+		sql.delete(namespace + ".delete", bno);
+	}
+
+	// 게시물총갯수
+	@Override
+	public int count() throws Exception {
+		return sql.selectOne(namespace + ".count"); 
+	}
+	
+	// 게시물 목록 + 페이징
+	//DAO와 매퍼에서는 데이터를 하나만 전송할 수 있기 때문에, 2개 이상의 데이터를 다룰 때는 VO(Value Object)를 사용하거나 해시맵을 이용합니다.
+	@Override
+	public List listPage(int displayPost, int postNum) throws Exception {
+
+	 HashMap data = new HashMap();
+	  
+	 data.put("displayPost", displayPost);
+	 data.put("postNum", postNum);
+	  
+	 return sql.selectList(namespace + ".listPage", data);
+	}
+
+}
