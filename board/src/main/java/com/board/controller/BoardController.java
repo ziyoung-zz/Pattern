@@ -31,7 +31,7 @@ public class BoardController {
 	 
 	// 게시물 작성
 	 @RequestMapping(value = "/write", method = RequestMethod.GET)
-	 public void getWirte2() throws Exception {
+	 public void getWirte() throws Exception {
 	    
 	 }
 	 
